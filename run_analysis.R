@@ -127,6 +127,54 @@ validateDataTables <- function(subjectTable, dataSetTable, dataLabelTable, suffi
     invisible()
 }
 
+tidyUpData <- function(testData, featureNames, activityLabel)
+{
+    ## Tidy up the dataset.
+    ##
+    ##  testData      - data.table to clean
+    ##
+    ##  featureNames  - Names of normalized data columns.  Will be range checked to insure
+    ##                  data is[-1.0..1.0]
+    ##
+    ##  activityLabel - Activity numbers to text names.  Data will be cleaned to insure that
+    ##                  no invalid activities are found. The activity number will then be
+    ##                  replaced with the activity text (as a factor).  Activity text will
+    ##                  be forced to uppercase to keep it consistent.
+    ##
+    ## Returns clean and tidy data
+    #
+    # Tidy data has
+    #
+    #   1. Each variable you measure should be in one column
+    #
+    #   2. Each different observation of that variable should be in a different row
+    #
+    #   3. There should be one table for each "kind" of variable
+    #
+    #   4. If you have multiple tables, they should include a column in the table that allows
+    #      them to be linked
+    #
+    # Verify that no 'na's exist
+
+    allData <- na.omit(testData)
+
+    # Drop all rows with invalid normalized data
+
+    #  TODO
+
+    # Drop all rows with invalid activity numbers
+
+    # TODO
+
+    # Change all activity numbers to text (factor)
+
+    # TODO
+
+    # Return our cleaned and tidy data
+
+    invisible(allData)
+}
+
 readDataSet <- function(baseDir, suffix, featureNames)
 {
     ## Read in and clean a data set
@@ -164,9 +212,13 @@ readDataSet <- function(baseDir, suffix, featureNames)
 
     validateDataTables(subjectTable, dataSetTable, dataLabelTable, suffix)
 
-    # Merge the data into a single data.table and return it to caller
+    # Merge the data into a data.table and return it to caller
 
-    cbind(cbind(subjectTable, dataLabelTable), dataSetTable)
+    allData <- cbind(cbind(subjectTable, dataLabelTable), dataSetTable)
+
+    # Make it tidy and return
+
+    tidyUpData(allData, featureNames, activityLabel)
 }
 
 run_analysis <- function(inputDir="./data/UCI HAR Dataset", outputDir="./output")
