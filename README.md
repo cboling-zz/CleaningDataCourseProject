@@ -12,11 +12,10 @@ Running the script
 To run the script, start **R**, source the *run_analysis.R* script, and then run the 
 *run_analysis()*.  For example, from the directory containing the R Script enter:
 
-'''
-prompt> R --quiet
-> source("run_analysis.R")
-> run_analysis()
-'''
+    prompt> R --quiet
+    > source("run_analysis.R")
+    > run_analysis()
+
 
 This will read and tidy the data and create any output files in the *output* subdirectory by
 default.  Upon successfull completion, the script will output **Done** and return you to the
