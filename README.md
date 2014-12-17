@@ -1,56 +1,47 @@
+Getting and Cleaning Data Course Project
+========================================
+
+This project provides the required 'R' script to perform cleaning operations on a set of data
+obtained from a Human Activity Recognition test performed uses a Samsung Galaxy S smartphone.
+
+The *run_analysis.R* script will read in the training and test data sets
+
+Running the script
+------------------
+
+To run the script, start **R**, source the *run_analysis.R* script, and then run the 
+*run_analysis()*.  For example, from the directory containing the R Script enter:
+
+'''
+prompt> R --quiet
+> source("run_analysis.R")
+> run_analysis()
+'''
+
+This will read and tidy the data and create any output files in the *output* subdirectory by
+default.  Upon successfull completion, the script will output **Done** and return you to the
+*R* prompt.
 
 
+Downloading the original data
+-----------------------------
 
+The oroginal data is available is included in this *Github* project in the *origData* (zip file)
+and *data* (expanded files) subdirectory.  The link to the original data is provided below
+and you can use the supplied *getData.R* script to automatically download it for you.  Simply 
+use the **getData()** function after sourcing the *getData.R* script.
 
+[original data set](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) 
 
-##########################################################
-Project Description:
+Version Information
+-------------------
 
-The purpose of this project is to demonstrate your ability to collect, work with, and clean a
-data set. The goal is to prepare tidy data that can be used for later analysis. You will be
-graded by your peers on a series of yes/no questions related to the project. You will be
-required to submit: 
+The following version of **R** and *R Libraries* were used to clean the data.
 
-   1) a tidy data set as described below, 
-   
-   2) a link to a Github repository with your script for performing the analysis, and 
-   
-   3) a code book that describes the variables, the data, and any transformations or work that
-      you performed to clean up the data called CodeBook.md. You should also include a 
-      README.md in the repo with your scripts. This repo explains how all of the scripts work 
-      and how they are connected.  
+* R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+* data.table -- 1.9.5
+* plyr -- 1.8.1
+* stringr -- 0.6.2
 
-One of the most exciting areas in all of data science right now is wearable computing - see for
-example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the
-most advanced algorithms to attract new users. The data linked to from the course website
-represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full
-description is available at the site where the data was obtained: 
+The operating system was Ubuntu 14.04 on a 64-bit x86 platform
 
-    http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones 
-
-Here are the data for the project: 
-
-    https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
-
-You should create one R script called run_analysis.R that does the following. 
-
-   1. Merges the training and the test sets to create one data set.
-
-   2. Extracts only the measurements on the mean and standard deviation for each measurement. 
-
-   3. Uses descriptive activity names to name the activities in the data set
-   
-   4. Appropriately labels the data set with descriptive variable names. 
-   
-   5. From the data set in step 4, creates a second, independent tidy data set with the
-      average of each variable for each activity and each subject.
-
-
-##########################################################
-
-[1] "Downloaded https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip at 2014-12-11 13:17:08 2014-12-11"
-
-##########################################################
-
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Platform: x86_64-pc-linux-gnu (64-bit)

@@ -108,6 +108,19 @@ readFeaturesDataset <- function(filename, featureNames)
     setNames(inputData, featureNames[['column_name']])
 }
 
+readLabelDataset <- function(filename, activityLabel)
+{
+    # Read in the activity lable data set
+
+    inputData <- fread(filename)
+
+    # Create a second column with the activity number as a factor
+
+    toFactor <- function(x) { as.factor(activityLabel[activityLabel$activity == x,]$name) }
+    inputData$activity <- apply(inputData, 1, toFactor)
+    subset(inputData,select=c(activity))
+}
+
 validateDataTables <- function(subjectTable, dataSetTable, dataLabelTable, suffix)
 {
     # Validate some assumptions or basic requirements of our tables
@@ -156,26 +169,10 @@ tidyUpData <- function(testData, featureNames, activityLabel)
     #
     # Verify that no 'na's exist
 
-    allData <- na.omit(testData)
-
-    # Drop all rows with invalid normalized data
-
-    #  TODO
-
-    # Drop all rows with invalid activity numbers
-
-    # TODO
-
-    # Change all activity numbers to text (factor)
-
-    # TODO
-
-    # Return our cleaned and tidy data
-
-    invisible(allData)
+    na.omit(testData)
 }
 
-readDataSet <- function(baseDir, suffix, featureNames)
+readDataSet <- function(baseDir, suffix, featureNames, activityLabel)
 {
     ## Read in and clean a data set
     ##
@@ -206,7 +203,7 @@ readDataSet <- function(baseDir, suffix, featureNames)
 
     subjectTable   <- readSubjectDataset(subjectFileName)
     dataSetTable   <- readFeaturesDataset(dataSetFileName, featureNames)
-    dataLabelTable <- fread(dataLabelFileName)
+    dataLabelTable <- readLabelDataset(dataLabelFileName, activityLabel)
 
     # Validate the tables
 
@@ -247,33 +244,31 @@ run_analysis <- function(inputDir="./data/UCI HAR Dataset", outputDir="./output"
 
     # Now read in the test and training data sets (this will satisfy '3 & 4' requirement above)
 
-    trainingData <- readDataSet(inputDir, "train", featureNames)
-    testData     <- readDataSet(inputDir, "test", featureNames)
+    trainingData <- readDataSet(inputDir, "train", featureNames, activityLabel)
+    testData     <- readDataSet(inputDir, "test", featureNames, activityLabel)
 
     # 1.  Now merge the training and test data
 
     allData <- rbind(trainingData, testData)
 
     # 2. Extract only the measurements on the mean and standard deviation for each measurement
+    #    (and of course the subject and activity as well)
 
-    #meanAndDevData <- extractData
-    # TODO
+    meanAndDevData <- subset(allData, select=grep("subject|activity|mean|std",
+                                                  colnames(allData)))
 
     #   5. From the combined data set, creates a second, independent tidy data set with the
+    #      average of each variable for each activity and each subject
 
-    # TODO
+    dataMelt <- melt(meanAndDevData, id=c("subject","activity"))
+    avgData  <- dcast(dataMelt, subject+activity ~ variable, mean)
+
+    # Output for easy upload/review
+
+    avgFile <- file.path(outputDir, "avgBySubjectAndActivity.txt")
+    write.table(avgData, file=avgFile)
+
+    print(sprintf("Output file for Average by subject and activity is '%s", avgFile))
 
     print("Done")
 }
-
-
-#   1. Merges the training and the test sets to create one data set.
-#
-#   2. Extracts only the measurements on the mean and standard deviation for each measurement.
-#
-#   3. Uses descriptive activity names to name the activities in the data set
-#
-#   4. Appropriately labels the data set with descriptive variable names.
-#
-#   5. From the data set in step 4, creates a second, independent tidy data set with the
-#      average of each variable for each activity and each subject.
